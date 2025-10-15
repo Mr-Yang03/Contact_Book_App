@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Contact
+from .models import Contact, Group
 
 def home(request):
     """Display all contacts"""
@@ -74,3 +74,57 @@ def delete_contact(request, contact_id):
         return redirect('home')
 
     return redirect('home')
+
+def groups(request):
+    """Display all groups"""
+    groups = Group.objects.all().order_by('name')
+
+    # Count contacts for each group
+    groups_with_counts = []
+    for group in groups:
+        groups_with_counts.append({
+            'id': group.id,
+            'name': group.name,
+            'contact_count': group.contacts.count()
+        })
+
+    return render(request, 'group.html', {
+        'groups': groups_with_counts
+    })
+
+def create_group(request):
+    """Create a new group"""
+    if request.method == 'POST':
+        name = request.POST.get('name')
+
+        if name:
+            Group.objects.create(name=name)
+
+        return redirect('groups')
+
+    return redirect('groups')
+
+def update_group(request, group_id):
+    """Update an existing group"""
+    group = get_object_or_404(Group, id=group_id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+
+        if name:
+            group.name = name
+            group.save()
+
+        return redirect('groups')
+
+    return redirect('groups')
+
+def delete_group(request, group_id):
+    """Delete a group"""
+    group = get_object_or_404(Group, id=group_id)
+
+    if request.method == 'POST':
+        group.delete()
+        return redirect('groups')
+
+    return redirect('groups')
