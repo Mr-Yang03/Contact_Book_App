@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.db import transaction
 from .models import Contact, Group
+import json
 
 def home(request):
     """Display all contacts"""
@@ -78,8 +80,8 @@ def delete_contact(request, contact_id):
 def groups(request):
     """Display all groups"""
     groups = Group.objects.all().order_by('name')
+    all_contacts = Contact.objects.all().order_by('first_name')
 
-    # Count contacts for each group
     groups_with_counts = []
     for group in groups:
         groups_with_counts.append({
@@ -88,43 +90,95 @@ def groups(request):
             'contact_count': group.contacts.count()
         })
 
+    contacts_json = json.dumps([{
+        'id': contact.id,
+        'first_name': contact.first_name,
+        'full_name': contact.get_full_name(),
+        'phone_number': contact.phone_number
+    } for contact in all_contacts])
+
     return render(request, 'group.html', {
-        'groups': groups_with_counts
+        'groups': groups_with_counts,
+        'all_contacts': all_contacts,
+        'all_contacts_json': contacts_json
     })
 
+@transaction.atomic
 def create_group(request):
-    """Create a new group"""
+    """Create a new group with atomic transaction"""
     if request.method == 'POST':
         name = request.POST.get('name')
+        contact_ids = request.POST.getlist('contacts')
 
-        if name:
-            Group.objects.create(name=name)
+        if name and contact_ids:
+            try:
+                group = Group.objects.create(name=name)
+
+                contacts = Contact.objects.filter(id__in=contact_ids)
+                if contacts.count() != len(contact_ids):
+                    raise ValueError("Some contacts do not exist")
+
+                group.contacts.set(contacts)
+
+            except Exception as e:
+                print(f"Error creating group: {e}")
 
         return redirect('groups')
 
     return redirect('groups')
 
+@transaction.atomic
 def update_group(request, group_id):
-    """Update an existing group"""
+    """Update an existing group with atomic transaction"""
     group = get_object_or_404(Group, id=group_id)
 
     if request.method == 'POST':
         name = request.POST.get('name')
+        contact_ids = request.POST.getlist('contacts')
 
         if name:
-            group.name = name
-            group.save()
+            try:
+                group.name = name
+                group.save()
+
+                if contact_ids:
+                    contacts = Contact.objects.filter(id__in=contact_ids)
+                    if contacts.count() != len(contact_ids):
+                        raise ValueError("Some contacts do not exist")
+
+                    group.contacts.set(contacts)
+                else:
+                    group.contacts.clear()
+
+            except Exception as e:
+                print(f"Error updating group: {e}")
 
         return redirect('groups')
 
     return redirect('groups')
 
+@transaction.atomic
 def delete_group(request, group_id):
-    """Delete a group"""
+    """Delete a group with atomic transaction"""
     group = get_object_or_404(Group, id=group_id)
 
     if request.method == 'POST':
-        group.delete()
+        try:
+
+            group.delete()
+
+        except Exception as e:
+            print(f"Error deleting group: {e}")
+
         return redirect('groups')
 
     return redirect('groups')
+
+def group_members(request, group_id):
+    """Get group members as JSON"""
+    group = get_object_or_404(Group, id=group_id)
+    member_ids = list(group.contacts.values_list('id', flat=True))
+
+    return JsonResponse({
+        'member_ids': member_ids
+    })
