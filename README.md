@@ -1,5 +1,38 @@
-To run this project, you must run the below command in powershell:
-  python -m venv venv            # create virtual environment
-  venv/Scripts/activate          # acivate virtual environment
-  python -m pip install Django   # install Django if it haven't been installed
-  python manage.py runserver     # run project
+# Contact Book App
+
+A contact management application built with Django.
+
+## Requirements
+
+- Python 3.x
+- Django
+
+## Installation and Setup
+
+### 1. Create virtual environment
+```bash
+python -m venv venv
+```
+
+### 2. Activate virtual environment
+**Windows (PowerShell):**
+```bash
+venv\Scripts\activate
+```
+
+**Linux/Mac:**
+```bash
+source venv/bin/activate
+```
+
+### 3. Install Django
+```bash
+python -m pip install Django
+```
+
+### 4. Run server
+```bash
+python manage.py runserver
+```
+
+Access the application at: `http://127.0.0.1:8000/`
