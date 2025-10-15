@@ -1,248 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh Bạ - Contact Book</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        header {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        h1 {
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        .search-section {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-add {
-            width: 100%;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
-        }
-
-        .contacts-section {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .section-header h2 {
-            color: #333;
-            font-size: 1.5em;
-        }
-
-        .contact-count {
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-
-        .contact-list {
-            list-style: none;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.3s;
-            cursor: pointer;
-        }
-
-        .contact-item:hover {
-            background: #f8f9ff;
-        }
-
-        .contact-item:last-child {
-            border-bottom: none;
-        }
-
-        .contact-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-right: 15px;
-        }
-
-        .contact-info {
-            flex: 1;
-        }
-
-        .contact-name {
-            font-weight: bold;
-            color: #333;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-        }
-
-        .contact-phone {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .contact-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-
-        .btn-edit {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background: #45a049;
-        }
-
-        .btn-delete {
-            background: #f44336;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: #da190b;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .empty-state svg {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .search-bar {
-                flex-direction: column;
-            }
-
-            .contact-actions {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <div class="container">
@@ -254,110 +17,196 @@
 
         <!-- Search Section -->
         <div class="search-section">
-            <div class="search-bar">
-                <input type="text" placeholder="🔍 Tìm kiếm theo tên hoặc số điện thoại..." id="searchInput"/>
-                <button class="btn btn-primary">Tìm kiếm</button>
-            </div>
-            <button class="btn btn-add">➕ Thêm liên hệ mới</button>
+            <form method="GET" action="{% url 'home' %}" class="search-bar">
+                <input type="text" name="search" placeholder="🔍 Tìm kiếm theo tên hoặc số điện thoại..." value="{{ search_query }}"/>
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </form>
+            <button class="btn btn-add" onclick="showAddModal()">➕ Thêm liên hệ mới</button>
         </div>
 
         <!-- Contacts List -->
         <div class="contacts-section">
             <div class="section-header">
                 <h2>Danh sách liên hệ</h2>
-                <span class="contact-count">5 liên hệ</span>
+                <span class="contact-count">{{ contacts|length }} liên hệ</span>
             </div>
 
+            {% if contacts %}
             <ul class="contact-list">
+                {% for contact in contacts %}
                 <li class="contact-item">
-                    <div class="contact-avatar">T</div>
+                    <div class="contact-avatar">{{ contact.first_name|first|upper }}</div>
                     <div class="contact-info">
-                        <div class="contact-name">Thắng</div>
-                        <div class="contact-phone">📞 0123 456 789</div>
+                        <div class="contact-name">{{ contact.get_full_name }}</div>
+                        <div class="contact-phone">📞 {{ contact.phone_number }}</div>
+                        {% if contact.email %}
+                        <div class="contact-email">✉️ {{ contact.email }}</div>
+                        {% endif %}
                     </div>
                     <div class="contact-actions">
-                        <button class="action-btn btn-edit">Sửa</button>
-                        <button class="action-btn btn-delete">Xóa</button>
+                        <button class="action-btn btn-edit" onclick="showEditModal({{ contact.id }}, '{{ contact.first_name }}', '{{ contact.last_name }}', '{{ contact.phone_number }}', '{{ contact.email }}', '{{ contact.address }}', '{{ contact.birthday|date:'Y-m-d' }}')">Sửa</button>
+                        <button class="action-btn btn-delete" onclick="showDeleteModal({{ contact.id }}, '{{ contact.get_full_name }}')">Xóa</button>
                     </div>
                 </li>
-
-                <li class="contact-item">
-                    <div class="contact-avatar">N</div>
-                    <div class="contact-info">
-                        <div class="contact-name">Nguyễn Văn A</div>
-                        <div class="contact-phone">📞 0987 654 321</div>
-                    </div>
-                    <div class="contact-actions">
-                        <button class="action-btn btn-edit">Sửa</button>
-                        <button class="action-btn btn-delete">Xóa</button>
-                    </div>
-                </li>
-
-                <li class="contact-item">
-                    <div class="contact-avatar">H</div>
-                    <div class="contact-info">
-                        <div class="contact-name">Hoàng Thị B</div>
-                        <div class="contact-phone">📞 0369 258 147</div>
-                    </div>
-                    <div class="contact-actions">
-                        <button class="action-btn btn-edit">Sửa</button>
-                        <button class="action-btn btn-delete">Xóa</button>
-                    </div>
-                </li>
-
-                <li class="contact-item">
-                    <div class="contact-avatar">P</div>
-                    <div class="contact-info">
-                        <div class="contact-name">Phạm Minh C</div>
-                        <div class="contact-phone">📞 0912 345 678</div>
-                    </div>
-                    <div class="contact-actions">
-                        <button class="action-btn btn-edit">Sửa</button>
-                        <button class="action-btn btn-delete">Xóa</button>
-                    </div>
-                </li>
-
-                <li class="contact-item">
-                    <div class="contact-avatar">L</div>
-                    <div class="contact-info">
-                        <div class="contact-name">Lê Văn D</div>
-                        <div class="contact-phone">📞 0845 123 456</div>
-                    </div>
-                    <div class="contact-actions">
-                        <button class="action-btn btn-edit">Sửa</button>
-                        <button class="action-btn btn-delete">Xóa</button>
-                    </div>
-                </li>
+                {% endfor %}
             </ul>
-
-            <!-- Uncomment this for empty state -->
-            <!-- <div class="empty-state">
+            {% else %}
+            <div class="empty-state">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                 </svg>
                 <h3>Chưa có liên hệ nào</h3>
                 <p>Hãy thêm liên hệ đầu tiên của bạn!</p>
-            </div> -->
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Add Contact Modal -->
+        <div id="addModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddModal()">&times;</span>
+                <h2>Thêm liên hệ mới</h2>
+                <form method="POST" action="{% url 'create_contact' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Họ:</label>
+                        <input type="text" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên:</label>
+                        <input type="text" name="last_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại:</label>
+                        <input type="text" name="phone_number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ:</label>
+                        <input type="text" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày sinh:</label>
+                        <input type="date" name="birthday">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Contact Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Chỉnh sửa liên hệ</h2>
+                <form method="POST" id="editForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Họ:</label>
+                        <input type="text" name="first_name" id="edit_first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên:</label>
+                        <input type="text" name="last_name" id="edit_last_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại:</label>
+                        <input type="text" name="phone_number" id="edit_phone_number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" name="email" id="edit_email">
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ:</label>
+                        <input type="text" name="address" id="edit_address">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày sinh:</label>
+                        <input type="date" name="birthday" id="edit_birthday">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Contact Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeDeleteModal()">&times;</span>
+                <h2>Xác nhận xóa</h2>
+                <p>Bạn có chắc chắn muốn xóa liên hệ <strong id="delete_contact_name"></strong>?</p>
+                <form method="POST" id="deleteForm">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-delete">Xóa</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Hủy</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
-        // Simple search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const contactItems = document.querySelectorAll('.contact-item');
-            
-            contactItems.forEach(item => {
-                const name = item.querySelector('.contact-name').textContent.toLowerCase();
-                const phone = item.querySelector('.contact-phone').textContent.toLowerCase();
-                
-                if (name.includes(searchTerm) || phone.includes(searchTerm)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        });
+        // Modal functions
+        function showAddModal() {
+            document.getElementById('addModal').style.display = 'block';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+
+        function showEditModal(id, firstName, lastName, phone, email, address, birthday) {
+            document.getElementById('editModal').style.display = 'block';
+            document.getElementById('edit_first_name').value = firstName;
+            document.getElementById('edit_last_name').value = lastName;
+            document.getElementById('edit_phone_number').value = phone;
+            document.getElementById('edit_email').value = email || '';
+            document.getElementById('edit_address').value = address || '';
+            document.getElementById('edit_birthday').value = birthday !== 'None' ? birthday : '';
+            document.getElementById('editForm').action = `/update/${id}/`;
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function showDeleteModal(id, name) {
+            document.getElementById('deleteModal').style.display = 'block';
+            document.getElementById('delete_contact_name').textContent = name;
+            document.getElementById('deleteForm').action = `/delete/${id}/`;
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const addModal = document.getElementById('addModal');
+            const editModal = document.getElementById('editModal');
+            const deleteModal = document.getElementById('deleteModal');
+
+            if (event.target == addModal) {
+                closeAddModal();
+            }
+            if (event.target == editModal) {
+                closeEditModal();
+            }
+            if (event.target == deleteModal) {
+                closeDeleteModal();
+            }
+        }
     </script>
 </body>
 </html>
