@@ -36,3 +36,7 @@ python manage.py runserver
 ```
 
 Access the application at: `http://127.0.0.1:8000/`
+
+### Django Admin Account
+- Username: admin
+- Password: thang123
